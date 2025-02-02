@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/jest": "^29.5.14",
     "cra-template-typescript": "1.2.0",
+    "playwright": "^1.50.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-scripts": "^3.0.1",
-    "socket.io-client": "^4.8.1"
+    "react-scripts": "^5.0.1",
+    "socket.io-client": "^4.8.1",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,5 +35,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3"
   }
 }
