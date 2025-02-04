@@ -1,0 +1,40 @@
+.msg{
+    width: fit-content;
+    max-width: 20%;
+    background-color:  rgba(194, 204, 203, 0.4);
+    border-radius: 16px;
+    border-color: rgb(71, 71, 71);
+    position: relative;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.autur{
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    color: rgba(0, 0, 0, 0.55);
+    position: absolute;
+    top: 7px;
+    left: 5px;
+    width: fit-content;
+    height: fit-content;
+}
+.data{
+    padding: 8px;
+    margin-left: 25px;
+    font-size: 20px;
+    width: auto;
+    word-wrap: break-word; /* Prevent overflow */
+    overflow-wrap: break-word;
+    text-align: left;
+}
+
+.date{
+    position: absolute;
+    bottom: 0px;
+    right: 2px;
+    font-size: 12px;
+    color: rgba(17, 19, 20, 0.75);
+}

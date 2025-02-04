@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Signup from './components/Signup';
-
+import Message from './components/Msg';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
       <Signup></Signup>
-        <img src={logo} className="App-logo" alt="logo" />
+      <br />
+      <Message autur={"ilay"} msg={"try design gfggfg"} time={"4.2 22:45"}></Message>
+        {false&&(<><img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -20,7 +22,7 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
-        </a>
+        </a></>)}
       </header>
       
     </div>
