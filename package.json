@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/jest": "^29.5.14",
     "cra-template-typescript": "1.2.0",
+    "first_chat_app": "file:",
     "playwright": "^1.50.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

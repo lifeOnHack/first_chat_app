@@ -1,24 +1,27 @@
-import express from 'express';
+import express from "express";
 import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
 // Load environment variables from .env file
-dotenv.config({path:"./.env"});
+dotenv.config({ path: "./.env" });
 
 const app = express();
 const server = http.createServer(app);
 
 // Initialize Socket.io and configure CORS to allow frontend connection
+const corss = {
+  origin: "http://localhost:3000", // Allow requests from React frontend
+};
 const io = new Server(server, {
-    cors: {
-      origin: "http://localhost:3000", // Allow requests from React frontend
-    },
-  });
-  
+  cors: corss,
+});
+app.get("/", (req, res) => {
+  res.send("server is running!");
+});
 // Middleware setup
-app.use(cors()); // Enable Cross-Origin Resource Sharing
+app.use(cors(corss)); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // Parse JSON request bodies
 
 
