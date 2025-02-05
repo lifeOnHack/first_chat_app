@@ -3,6 +3,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import signupRout from "./controllers/signup.js";
 
 // Load environment variables from .env file
 dotenv.config({ path: "./.env" });
@@ -23,7 +24,7 @@ app.get("/", (req, res) => {
 // Middleware setup
 app.use(cors(corss)); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // Parse JSON request bodies
-
+app.use("/signup", signupRout);
 
 
 

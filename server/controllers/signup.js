@@ -1,4 +1,10 @@
-const signupRout = require("express").Router();
+import express from "express";
+const signupRout = express.Router();
 
 
-signupRout.post("/")
+signupRout.post("/", async (req, res) => {
+    console.log(req.body);
+})
+
+
+export default signupRout;
