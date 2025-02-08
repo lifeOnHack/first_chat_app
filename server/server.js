@@ -9,15 +9,16 @@ import signupRout from "./controllers/signup.js";
 dotenv.config({ path: "./.env" });
 
 const app = express();
-const server = http.createServer(app);
+//const server = http.createServer(app);
 
 // Initialize Socket.io and configure CORS to allow frontend connection
 const corss = {
   origin: "http://localhost:3000", // Allow requests from React frontend
+  optionsSuccessStatus: 200
 };
-const io = new Server(server, {
-  cors: corss,
-});
+// const io = new Server(server, {
+//   cors: corss,
+// });
 app.get("/", (req, res) => {
   res.send("server is running!");
 });
@@ -32,6 +33,6 @@ app.use("/signup", signupRout);
 const PORT = process.env.PORT || 7070;
 
 // Start the server
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
