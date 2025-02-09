@@ -29,6 +29,7 @@
     margin-left: 14px;
     font-size: 16px;
     width: auto;
+    height: fit-content;
     word-wrap: break-word;
     /* Prevent overflow */
     overflow-wrap: break-word;

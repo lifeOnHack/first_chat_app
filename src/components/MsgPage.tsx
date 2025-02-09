@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Msg from "./Msg"
+import '../css/MsgPage.css'
 
 export interface msgData {
     author: string,
@@ -11,19 +12,24 @@ function MsgPage({ msgList }:
     { msgList: msgData[] }) {
     const [msgs, setMsgs] = useState<msgData[]>(msgList);
     const [newmsg, setNewMsg] = useState("");
-
+    const textInputRef = useRef<HTMLTextAreaElement>(null);
     return <div className="chat">
         <div className="msg-list">
-
             {msgs.map((m, i) => {
                 return <Msg autur={m.author} msg={m.msg} time={m.time}></Msg>;
             })}
-
         </div>
         <br />
         <div className="input-msg">
-            <input type="text" placeholder="type your message.." onChange={
-                e => setNewMsg(e.target.value)}
+            <textarea placeholder="type your message.."
+                ref={textInputRef}
+                onChange={e => {
+                    setNewMsg(e.target.value);
+                    if (textInputRef.current) {
+                        textInputRef.current.style.height = "auto"; // Reset height
+                        textInputRef.current.style.height = `${textInputRef.current.scrollHeight}px`; // Set to scroll height
+                    }
+                }}
                 value={newmsg}
             />
             <button onClick={(e) => {
