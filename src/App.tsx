@@ -2,8 +2,8 @@ import React, { Component, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Signup from './components/Signup';
-import Disconnect from './components/Disconnect';
-import MsgPage, { msgData } from './components/MsgPage';
+import Disconnect from "./components/Disconnect";
+import MsgPage from './components/MsgPage';
 import { io } from 'socket.io-client';
 
 function App() {

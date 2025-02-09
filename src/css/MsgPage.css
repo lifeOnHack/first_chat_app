@@ -57,9 +57,11 @@
     width: 80%;
     background-color: transparent;
     color: white;
-    font-size: 15px;
+    font-size: 16px;
 
     resize: unset;
     scroll-behavior: smooth;
     border-radius: 8px;
+
+    scrollbar-width: none;
 }
