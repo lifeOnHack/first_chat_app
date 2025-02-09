@@ -1,10 +1,10 @@
 import React from "react";
-
+import '../css/Disconnect.css'
 function Disconnect({ discon }: any) {
 
-
+    //TODO: add socket disconnection
     return <>
-        <button onClick={discon}>Bye Bye!</button>
+        <button className="discon" onClick={discon}>Bye Bye!</button>
     </>
 }
 

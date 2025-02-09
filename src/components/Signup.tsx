@@ -19,11 +19,7 @@ function Signup({ setSigned }: any) {
             if (res.status === 200) {
                 const data = await res.json();
                 alert("user " + username + " signedup");
-                //TODO: tell father that user logedin
-                // switch fages
                 setSigned(true);
-                console.log("yesss");
-                alert(data.data + " xd")
             } else {
                 alert("signup faild with status: " + res.status);
             }

@@ -1,6 +1,7 @@
 .msg {
     width: fit-content;
     max-width: 20%;
+    min-width: 80px;
     background-color: rgba(194, 204, 203, 0.4);
     border-radius: 16px;
     border-color: rgb(71, 71, 71);
@@ -25,7 +26,7 @@
 
 .data {
     padding: 8px;
-    margin-left: 18px;
+    margin-left: 14px;
     font-size: 16px;
     width: auto;
     word-wrap: break-word;
@@ -37,7 +38,7 @@
 .date {
     position: absolute;
     bottom: 0px;
-    right: 2px;
+    right: 0px;
     font-size: 8px;
     color: rgba(17, 19, 20, 0.75);
 }
