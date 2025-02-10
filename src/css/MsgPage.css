@@ -11,6 +11,10 @@
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-row-gap: 1.5%;
+
+    position: relative;
+    height: fit-content;
+    overflow-y: auto;
 }
 
 .input-msg {

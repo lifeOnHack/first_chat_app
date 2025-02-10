@@ -34,10 +34,10 @@ const server = app.listen(PORT, () => {
 const io = new Server(server, {
   cors: corss,
 });
-io.on("connection", (sock)=>{
+io.on("connection", (sock) => {
   console.log(`new user: ${sock.id}`);
-  sock.on('new_msg', (data)=>{
-    console.log(`new msg from ${data.author}`);
-    io.emit("new_msg",{author:data.author, msg:data.msg, time:data.time});
+  sock.on('new_msg', (data) => {
+    console.log(`new msg from ${data.author}:  ${JSON.stringify(data)}`);
+    io.emit("recv_msg", data);
   })
 })

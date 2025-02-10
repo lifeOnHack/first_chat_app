@@ -8,20 +8,21 @@ import { io } from 'socket.io-client';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, setUser] = useState("");
   //TODO add socket connection
-  const [sock,setSocket] = useState(io("ws://localhost:7070"));
+  const [sock, setSocket] = useState(io("ws://localhost:7070"));
   return (
     <div className="App">
       <header className="App-header">
-        {(!isSignedIn && <Signup setSigned={setIsSignedIn}></Signup>)}
+        {(!isSignedIn && <Signup setSigned={setIsSignedIn} setName={setUser}></Signup>)}
         {(isSignedIn && <Disconnect discon={() => setIsSignedIn(false)}></Disconnect>)}
-        {(isSignedIn &&  <MsgPage user={"ilay"} 
-        sock={sock}
-        msgList={[
-          { author: "ilay1", msg: "hi", time: "9.2 10:30" },
-          { author: "ilay2", msg: "byyvdvzvzxee", time: "9.2 10:30" },
-          { author: "ilay3", msg: "1111", time: "9.2 10:30" }
-        ]}></MsgPage>)}
+        {(isSignedIn && <MsgPage user={user}
+          sock={sock}
+          msgList={[
+            { author: "ilay1", msg: "hi", time: "9.2 10:30" },
+            { author: "ilay2", msg: "byyvdvzvzxee", time: "9.2 10:30" },
+            { author: "ilay3", msg: "1111", time: "9.2 10:30" }
+          ]}></MsgPage>)}
         <br />
         {false && (<><img src={logo} className="App-logo" alt="logo" />
           <p>

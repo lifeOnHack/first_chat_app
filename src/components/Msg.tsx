@@ -1,11 +1,17 @@
 import "../css/Msg.css"
 import React from "react";
 
-function Message({author,msg,time}:
-    {author:string,msg:string,time:string}){
+function Message({ author, msg, time }:
+    { author: string, msg: string, time: string }) {
     return <div className="msg">
         <label className="autur"><strong>{author}</strong>:</label>
-        <p className="data">{msg}</p>
+        <p className="data">{msg.split("\n").map((line, index) => (
+            <span key={index}>
+                {line}
+                <br />
+            </span>
+        ))}
+        </p>
         <label className="date">{time}</label>
     </div>
 }

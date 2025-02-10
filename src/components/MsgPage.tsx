@@ -1,25 +1,39 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Msg from "./Msg"
 import '../css/MsgPage.css'
 import { Socket } from "socket.io-client";
-
+import { getTime } from "../utils/func";
 export interface msgData {
     author: string,
     msg: string,
     time: string
 }
 
-function MsgPage({ user,msgList, sock }:
-    { user:string, msgList: msgData[], sock:Socket|null }) {
+function MsgPage({ user, msgList, sock }:
+    { user: string, msgList: msgData[], sock: Socket | null }) {
     const [msgs, setMsgs] = useState<msgData[]>(msgList);
     const [newmsg, setNewMsg] = useState("");
     const textInputRef = useRef<HTMLTextAreaElement>(null);
-    
-    const sendMsg = (e:any)=>{
-        
+
+    sock?.on("recv_msg", (data) => {
+        const newMsgs = msgs.concat([data]);
+        setMsgs(newMsgs);
+        console.log(data.msg);
+    });
+
+    const sendMsg = (e: any) => {
+        console.log("in SendMsg");
+        if (sock && newmsg != "") {
+            console.log("in Sock");
+            sock.emit('new_msg', { author: user, msg: newmsg, time: getTime() });
+            setNewMsg("");
+        }
     }
-    
-    
+    // useEffect(() => {
+
+    // }, [sock]);
+
+
     return <div className="chat">
         <div className="msg-list">
             {msgs.map((m, i) => {

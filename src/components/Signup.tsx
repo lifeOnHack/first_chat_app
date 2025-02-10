@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import "../css/Signup.css";
-function Signup({ setSigned }: any) {
+function Signup({ setSigned, setName }: any) {
     const loginUrl = "http://localhost:7070/signup"
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -20,6 +20,7 @@ function Signup({ setSigned }: any) {
                 const data = await res.json();
                 alert("user " + username + " signedup");
                 setSigned(true);
+                setName(username);
             } else {
                 alert("signup faild with status: " + res.status);
             }
