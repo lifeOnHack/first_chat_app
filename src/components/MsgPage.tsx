@@ -14,7 +14,7 @@ function MsgPage({ user, msgList, sock }:
     const [msgs, setMsgs] = useState<msgData[]>(msgList);
     const [newmsg, setNewMsg] = useState("");
     const textInputRef = useRef<HTMLTextAreaElement>(null);
-
+    const msgListRef = useRef<HTMLDivElement>(null);
     sock?.on("recv_msg", (data) => {
         const newMsgs = msgs.concat([data]);
         setMsgs(newMsgs);
@@ -22,7 +22,6 @@ function MsgPage({ user, msgList, sock }:
     });
 
     const sendMsg = (e: any) => {
-        console.log("in SendMsg");
         if (sock && newmsg != "") {
             console.log("in Sock");
             sock.emit('new_msg', { author: user, msg: newmsg, time: getTime() });
@@ -32,10 +31,14 @@ function MsgPage({ user, msgList, sock }:
     // useEffect(() => {
 
     // }, [sock]);
-
+    useEffect(() => {
+        if (msgListRef.current) {
+            msgListRef.current.scrollTop = msgListRef.current.scrollHeight;
+        }
+    }, [msgs])
 
     return <div className="chat">
-        <div className="msg-list">
+        <div className="msg-list" ref={msgListRef}>
             {msgs.map((m, i) => {
                 return <Msg author={m.author} msg={m.msg} time={m.time}></Msg>;
             })}
