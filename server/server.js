@@ -3,10 +3,10 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import signupRout from "./controllers/signup.js";
-
+import { connectDB } from "./lib/db.js";
 // Load environment variables from .env file
-dotenv.config({ path: "./.env" });
-
+const configRes = dotenv.config({ path: "./.env" });
+const uri = `mongodb+srv://msgapp_ilay:${process.env.DB_PW}@msgapp.yvva4.mongodb.net/?retryWrites=true&w=majority&appName=msgapp`;
 const app = express();
 // Initialize Socket.io and configure CORS to allow frontend connection
 const corss = {
@@ -28,6 +28,7 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 7070;
 // Start the server
 const server = app.listen(PORT, () => {
+  connectDB(uri);
   console.log(`Server running on port ${PORT}`);
 });
 //socketIO section

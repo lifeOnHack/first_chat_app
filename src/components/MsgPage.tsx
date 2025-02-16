@@ -22,7 +22,7 @@ function MsgPage({ user, msgList, sock }:
     });
 
     const sendMsg = (e: any) => {
-        if (sock && newmsg != "") {
+        if (sock && newmsg !== "") {
             console.log("in Sock");
             sock.emit('new_msg', { author: user, msg: newmsg, time: getTime() });
             setNewMsg("");

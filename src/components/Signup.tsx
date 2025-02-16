@@ -16,13 +16,13 @@ function Signup({ setSigned, setName }: any) {
                 password: password
             })
         }).then(async (res) => {
+            const data = await res.json();
             if (res.status === 200) {
-                const data = await res.json();
                 alert("user " + username + " signedup");
                 setSigned(true);
                 setName(username);
             } else {
-                alert("signup faild with status: " + res.status);
+                alert("signup faild with status: " + res.status + `\n${data.body}`);
             }
         }).catch((err) => {
             alert("request failed xoxo");
