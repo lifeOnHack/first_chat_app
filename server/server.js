@@ -37,8 +37,15 @@ const io = new Server(server, {
 });
 io.on("connection", (sock) => {
   console.log(`new user: ${sock.id}`);
-  sock.on('new_msg', (data) => {
+  sock.on('new_msg', async (data) => {
     console.log(`new msg from ${data.author}:  ${JSON.stringify(data)}`);
+    const dbRes = await newMsg(
+      req.body.author,
+      req.body.msg,
+      req.body.date);
     io.emit("recv_msg", data);
   })
+})
+io.on("disconnect", (sock) => {
+  console.log(`user disconnected: ${sock.id}`);
 })

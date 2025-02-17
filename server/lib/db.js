@@ -53,3 +53,28 @@ export const signUser = async (uName, pw) => {
     //     //TODO: return ok
     // }
 }
+
+const msgSchem = new mongoose.Schema({
+    author: { type: String, require: true },
+    msg: { type: String, require: true },
+    date: { type: String, require: true }
+})
+const Msg = mongoose.model("Msg", msgSchem);
+
+export const getAllMsgs = async () => {
+    const res = await Msg.find({});
+    if (res) {
+        return res;
+    } else return null;
+}
+
+export const newMsg = async (author, msg, date) => {
+    const msg = new User({ author, msg, date });
+    if (msg) {
+        await msg.save();
+        return { status: 200, msg: "" }
+    } else {
+        //return msg error
+        return { status: 402, msg: "ERR: can't save msg" };
+    }
+}
