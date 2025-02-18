@@ -11,8 +11,8 @@ export interface msgData {
 
 function MsgPage({ user, sock }:
     { user: string, sock: Socket | null }) {
-        const msgUrl = "http://localhost:7070/message"
-        const [msgs, setMsgs] = useState<msgData[]>([]);
+    const msgUrl = "http://localhost:7070/message"
+    const [msgs, setMsgs] = useState<msgData[]>([]);
     const [newmsg, setNewMsg] = useState("");
     const textInputRef = useRef<HTMLTextAreaElement>(null);
     const msgListRef = useRef<HTMLDivElement>(null);
@@ -20,23 +20,18 @@ function MsgPage({ user, sock }:
         if (data === null) {
             console.log("can't saved msg");
         }else{
-        const newMsgs = msgs.concat([data]);
-        setMsgs(newMsgs);
-        console.log(data.msg);
+            setMsgs(msgs.concat([data]));
         }
     });
 
     const sendMsg = (e: any) => {
-        if (sock && newmsg !== "") {
-            console.log("in Sock");
+        if (sock && newmsg.replace(/\s+/g, "") !== "") {
             sock.emit('new_msg', { author: user, msg: newmsg, time: getTime() });
             setNewMsg("");
         }
     }
     useEffect(()=>{
-        console.log('get msgs');
-        
-        fetch(msgUrl, {
+       fetch(msgUrl, {
             "method": "GET",
             headers: {
                 "Content-Type": 'application/json'
@@ -44,7 +39,6 @@ function MsgPage({ user, sock }:
         }).then(async (res)=>{
             const data = await res.json();
             if (res.status === 201) {
-                console.log(data);
                 setMsgs(data);
             }else{
                 console.log('fail to get msgs');

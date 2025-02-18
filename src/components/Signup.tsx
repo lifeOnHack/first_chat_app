@@ -18,7 +18,7 @@ function Signup({ setSigned, setName }: any) {
         }).then(async (res) => {
             const data = await res.json();
             if (res.status === 200) {
-                alert("user " + username + " signedup");
+                //alert("user " + username + " signedup");
                 setSigned(true);
                 setName(username);
             } else {
