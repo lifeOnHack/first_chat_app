@@ -10,11 +10,12 @@ export const connectDB = async (uri) => {
     }
 
 }
+//USER SCHEMA
 const userSchem = new mongoose.Schema({
     username: { type: String, require: true },
     password: { type: String, require: true }
 });
-
+userSchem.set("versionKey", false);
 const User = mongoose.model('User', userSchem);
 export const signUser = async (uName, pw) => {
     const userRes = await User.findOne({ username: uName });
@@ -53,25 +54,33 @@ export const signUser = async (uName, pw) => {
     //     //TODO: return ok
     // }
 }
-
+// MESSAGE SCHEMA
 const msgSchem = new mongoose.Schema({
     author: { type: String, require: true },
     msg: { type: String, require: true },
     date: { type: String, require: true }
 })
+msgSchem.set("versionKey", false);
+msgSchem.set("toJSON",{
+    transform: (doc, ret) => {
+      delete ret._id;     // Remove _id
+      ret.time = ret.date;
+      delete ret.date;
+      return ret;
+    },
+  });
+
 const Msg = mongoose.model("Msg", msgSchem);
 
 export const getAllMsgs = async () => {
     const res = await Msg.find({});
-    if (res) {
-        return res;
-    } else return null;
+    return res;
 }
 
 export const newMsg = async (author, msg, date) => {
-    const msg = new User({ author, msg, date });
-    if (msg) {
-        await msg.save();
+    const nMsg = new Msg({ author, msg, date });
+    if (nMsg) {
+        await nMsg.save();
         return { status: 200, msg: "" }
     } else {
         //return msg error

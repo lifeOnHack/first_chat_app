@@ -3,7 +3,8 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import signupRout from "./controllers/signup.js";
-import { connectDB } from "./lib/db.js";
+import { connectDB,newMsg } from "./lib/db.js";
+import messageRout from "./controllers/message.js";
 // Load environment variables from .env file
 const configRes = dotenv.config({ path: "./.env" });
 const uri = `mongodb+srv://msgapp_ilay:${process.env.DB_PW}@msgapp.yvva4.mongodb.net/?retryWrites=true&w=majority&appName=msgapp`;
@@ -19,6 +20,7 @@ const corss = {
 app.use(cors(corss)); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // Parse JSON request bodies
 app.use("/signup", signupRout);
+app.use("/message",messageRout);
 app.get("/", (req, res) => {
   res.send("server is running!");
 });
@@ -40,10 +42,15 @@ io.on("connection", (sock) => {
   sock.on('new_msg', async (data) => {
     console.log(`new msg from ${data.author}:  ${JSON.stringify(data)}`);
     const dbRes = await newMsg(
-      req.body.author,
-      req.body.msg,
-      req.body.date);
-    io.emit("recv_msg", data);
+      data.author,
+      data.msg,
+      data.time);
+    if (dbRes.status == 200) {
+      io.emit("recv_msg", data);
+    }else{
+      sock.emit("recv_msg",null);
+    }
+    
   })
 })
 io.on("disconnect", (sock) => {

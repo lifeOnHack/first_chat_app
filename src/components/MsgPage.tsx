@@ -9,16 +9,21 @@ export interface msgData {
     time: string
 }
 
-function MsgPage({ user, msgList, sock }:
-    { user: string, msgList: msgData[], sock: Socket | null }) {
-    const [msgs, setMsgs] = useState<msgData[]>(msgList);
+function MsgPage({ user, sock }:
+    { user: string, sock: Socket | null }) {
+        const msgUrl = "http://localhost:7070/message"
+        const [msgs, setMsgs] = useState<msgData[]>([]);
     const [newmsg, setNewMsg] = useState("");
     const textInputRef = useRef<HTMLTextAreaElement>(null);
     const msgListRef = useRef<HTMLDivElement>(null);
     sock?.on("recv_msg", (data) => {
+        if (data === null) {
+            console.log("can't saved msg");
+        }else{
         const newMsgs = msgs.concat([data]);
         setMsgs(newMsgs);
         console.log(data.msg);
+        }
     });
 
     const sendMsg = (e: any) => {
@@ -28,9 +33,24 @@ function MsgPage({ user, msgList, sock }:
             setNewMsg("");
         }
     }
-    // useEffect(() => {
-
-    // }, [sock]);
+    useEffect(()=>{
+        console.log('get msgs');
+        
+        fetch(msgUrl, {
+            "method": "GET",
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        }).then(async (res)=>{
+            const data = await res.json();
+            if (res.status === 201) {
+                console.log(data);
+                setMsgs(data);
+            }else{
+                console.log('fail to get msgs');
+            }
+        })
+    },[]);
     useEffect(() => {
         if (msgListRef.current) {
             msgListRef.current.scrollTop = msgListRef.current.scrollHeight;

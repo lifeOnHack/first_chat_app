@@ -16,13 +16,7 @@ function App() {
       <header className="App-header">
         {(!isSignedIn && <Signup setSigned={setIsSignedIn} setName={setUser}></Signup>)}
         {(isSignedIn && <Disconnect discon={() => setIsSignedIn(false)}></Disconnect>)}
-        {(isSignedIn && <MsgPage user={user}
-          sock={sock}
-          msgList={[
-            { author: "ilay1", msg: "hi", time: "9.2 10:30" },
-            { author: "ilay2", msg: "byyvdvzvzxee", time: "9.2 10:30" },
-            { author: "ilay3", msg: "1111", time: "9.2 10:30" }
-          ]}></MsgPage>)}
+        {(isSignedIn && <MsgPage user={user} sock={sock}></MsgPage>)}
         <br />
         {false && (<><img src={logo} className="App-logo" alt="logo" />
           <p>
