@@ -2,9 +2,8 @@ import React, { Component, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Signup from './components/Signup';
-import Disconnect from "./components/Disconnect";
-import MsgPage from './components/MsgPage';
 import { io } from 'socket.io-client';
+import HomePage from './components/HomePage';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -15,8 +14,10 @@ function App() {
     <div className="App">
       <header className="App-header">
         {(!isSignedIn && <Signup setSigned={setIsSignedIn} setName={setUser}></Signup>)}
-        {(isSignedIn && <Disconnect discon={() => setIsSignedIn(false)}></Disconnect>)}
-        {(isSignedIn && <MsgPage user={user} sock={sock}></MsgPage>)}
+        {(isSignedIn && <HomePage user={user}
+                          sock={sock}
+                          setIsSignedIn={setIsSignedIn}
+                          ></HomePage>)}
         <br />
         {false && (<><img src={logo} className="App-logo" alt="logo" />
           <p>

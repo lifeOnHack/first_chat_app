@@ -1,9 +1,11 @@
 .chat {
-    width: 80%;
-    min-height: 100%;
+    width: 82%;
+    height: 91vh;
     flex-direction: column;
     overflow: auto;
-    margin-top: 1%;
+    margin-top: 2vh;
+    position: absolute;
+    right: 0;
 }
 
 .msg-list {
