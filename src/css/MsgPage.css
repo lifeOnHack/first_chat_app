@@ -4,8 +4,10 @@
     flex-direction: column;
     overflow: auto;
     margin-top: 2vh;
-    position: absolute;
-    right: 0;
+    /* position: absolute;
+    right: 0px; */
+    position: relative;
+    left: 18%;
 }
 
 .msg-list {

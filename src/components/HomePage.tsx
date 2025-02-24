@@ -6,8 +6,8 @@ import '../css/HomePage.css'
 
 
 export default function HomePage({ user, sock, setIsSignedIn }:
-    { user: string, sock: Socket | null, setIsSignedIn:any }) {
-    
+    { user: string, sock: Socket | null, setIsSignedIn: any }) {
+
 
     return <div className="home">
         <MsgPage user={user} sock={sock}></MsgPage>

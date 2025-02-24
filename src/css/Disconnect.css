@@ -8,9 +8,13 @@
     border-width: 3px;
     padding-top: 8px;
     padding-bottom: 8px;
-    position: absolute;
+    /* position: absolute;
     left: 15px;
+    bottom: 25px; */
+    position: relative;
     bottom: 25px;
+    left: -48%;
+    transform: translate(50%);
 }
 
 .discon:hover {

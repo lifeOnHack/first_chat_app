@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import signupRout from "./controllers/signup.js";
-import { connectDB,newMsg } from "./lib/db.js";
+import { connectDB, newMsg } from "./lib/db.js";
 import messageRout from "./controllers/message.js";
 // Load environment variables from .env file
 const configRes = dotenv.config({ path: "./.env" });
@@ -20,7 +20,7 @@ const corss = {
 app.use(cors(corss)); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // Parse JSON request bodies
 app.use("/signup", signupRout);
-app.use("/message",messageRout);
+app.use("/message", messageRout);
 app.get("/", (req, res) => {
   res.send("server is running!");
 });
@@ -29,8 +29,8 @@ app.get("/", (req, res) => {
 // Set the port from .env or use 3001 as default
 const PORT = process.env.PORT || 7070;
 // Start the server
-const server = app.listen(PORT, () => {
-  connectDB(uri);
+const server = app.listen(PORT, async () => {
+  await connectDB(uri);
   console.log(`Server running on port ${PORT}`);
 });
 //socketIO section
@@ -47,10 +47,10 @@ io.on("connection", (sock) => {
       data.time);
     if (dbRes.status == 200) {
       io.emit("recv_msg", data);
-    }else{
-      sock.emit("recv_msg",null);
+    } else {
+      sock.emit("recv_msg", null);
     }
-    
+
   })
 })
 io.on("disconnect", (sock) => {
