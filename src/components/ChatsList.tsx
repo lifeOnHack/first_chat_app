@@ -3,7 +3,7 @@ import { Socket } from "socket.io-client";
 import Chat from "./Chat";
 import '../css/ChatsList.css'
 
-interface userdata {
+interface chatData {
     name: string, imgurl: string
 }
 
@@ -11,8 +11,8 @@ export default function ChatsList(
     { sock }:
         { sock: Socket }
 ) {
-    const [userList, setUsers] = useState([]);
-    const [activeUser, setActive] = useState("");
+    const [chatList, setChats] = useState([]);
+    const [activeChat, setActive] = useState("");
     //give each user callback that setActive(his_name)
     //when pass isActive check his name equal to activeUser
     useEffect(() => {

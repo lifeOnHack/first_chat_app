@@ -13,15 +13,14 @@ export const connectDB = async (uri) => {
 //USER SCHEMA
 const userSchem = new mongoose.Schema({
     username: { type: String, require: true },
-    password: { type: String, require: true }
+    password: { type: String, require: true },
+    chats: [{ type: Schema.Types.ObjectId, ref: 'Chat' }]
 });
 userSchem.set("versionKey", false);
 const User = mongoose.model('User', userSchem);
 export const signUser = async (uName, pw) => {
     try {
         const userRes = await User.findOne({ username: uName });
-
-
         const saltRounds = 12;
         if (userRes === null) {
             // new user
@@ -48,21 +47,50 @@ export const signUser = async (uName, pw) => {
         console.log(error);
         return { status: 500, msg: error };
     }
-    // const passRes = await User.findOne({password:pw});
-    // if (userRes === null && passRes === null) {
-    //     //new user
-    //     //TODO: save new user
-    // }else if(userRes === null || passRes === null){
-    //     //user exists
-    //     //TODO return error uname or password in use
-    // }
-    // else if(userRes?.id === passRes?.id){
-    //     //signed user
-    //     //TODO: return ok
-    // }
 }
+
+// CHAT SCHEMA
+const chatSchema = new mongoose.Schema({
+    isGroup: { type: Boolean, default: false },  // Group chat indicator
+    chatName: { type: String, default: '' },  // Group name (if it's a group chat)
+    imgurl:{type:String,default:null}
+  });
+chatSchema.set("versionKey", false);
+chatSchema.set("toJSON", {
+    transform: (doc, ret) => {
+        delete ret._id;     // Remove _id
+        delete ret.isGroup;
+        return ret;
+    },
+})
+
+const Chat = mongoose.model("Chat", chatSchema);
+
+export const getChats = async (un)=>{
+    try {
+        const user = await User.findOne({username:un})
+          .select('chats')  // Only fetch the chats field
+          .populate({
+            path: 'chats',
+            select: '_id chatName'  // Only populate _id and chatName
+          });
+    
+        if (!user) {
+          console.log('User not found');
+          return {status:404, msg:'User not found'};
+        }
+    
+        console.log('Chats for user:', user.chats);
+        return {status:201, msg:user.chats} ;  // Returns an array of objects with _id and chatName
+      } catch (err) {
+        console.error('Error retrieving chats:', err);
+        return {status:401, msg:"ERR: can't get chats"} ;
+      }
+}
+
 // MESSAGE SCHEMA
 const msgSchem = new mongoose.Schema({
+    chat: { type: Schema.Types.ObjectId, ref: 'Chat', required: true },
     author: { type: String, require: true },
     msg: { type: String, require: true },
     date: { type: String, require: true }
@@ -73,6 +101,7 @@ msgSchem.set("toJSON", {
         delete ret._id;     // Remove _id
         ret.time = ret.date;
         delete ret.date;
+        delete ret.chat;
         return ret;
     },
 });
@@ -94,3 +123,16 @@ export const newMsg = async (author, msg, date) => {
         return { status: 402, msg: "ERR: can't save msg" };
     }
 }
+export const getChatMsgs = async (id)=>{
+    try {
+        const msgList = await Msg.find({chat:id}).populate('author','msg','date');
+        if (!msgList) {
+            return {status:404,msg:"can't fetch msgs"};
+        }else {return {status:201, msg:msgList};}
+    } catch (error) {
+        console.error('Error retrieving chats:', error);
+        return {status:500, msg: "ERR:: can't get chats"};
+    }
+}
+
+
