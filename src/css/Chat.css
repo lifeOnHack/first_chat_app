@@ -1,0 +1,38 @@
+.conv {
+    display: flex;
+    align-items: stretch;
+    justify-items: start;
+    border-radius: 5px;
+    width: 250px;
+    max-width: 350px;
+    padding: 3px;
+}
+
+.conv:hover {
+    background-color: #32374388;
+}
+
+.active {
+    background-color: #323743d7;
+}
+
+.profielPhoto {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.name {
+    color: bisque;
+    /* min-width: fit-content; */
+    width: fit-content;
+    height: fit-content;
+    font-size: 24px;
+    text-align: center;
+    margin-left: 15%;
+    margin-right: 5%;
+    /* background-color: green; */
+    flex-shrink: 2;
+    flex-grow: 1;
+}

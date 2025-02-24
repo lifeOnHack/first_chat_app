@@ -1,0 +1,15 @@
+.flex_div {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    gap: 2px;
+    background-color: blanchedalmond;
+}
+
+.chats {
+    height: max-content;
+    padding-right: 2px;
+    padding-left: 2px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
