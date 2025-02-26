@@ -6,7 +6,7 @@ const signupRout = express.Router();
 signupRout.post("/", async (req, res) => {
     //console.log(req.body);
     const dbRes = await signUser(req.body.username, req.body.password);
-    res.status(dbRes.status).send({ body: dbRes.msg });
+    res.status(dbRes.status).json({ body: dbRes.msg });
 })
 
 

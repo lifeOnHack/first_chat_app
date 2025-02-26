@@ -1,7 +1,6 @@
 import express from "express";
+import { getChats } from "../lib/db.js";
 const chatsRout = express.Router();
-import { getChats } from "../lib/db";
-
 chatsRout.get('/:un',async (req,res)=>{
     const username = req.params.un; 
     const dbRes = await getChats(username);

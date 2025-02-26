@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 export const connectDB = async (uri) => {
     try {
         await mongoose.connect(uri);
+        console.log('db connected');
     } catch (error) {
         console.log("unable to connect to DB");
         console.log(error);
@@ -14,10 +15,10 @@ export const connectDB = async (uri) => {
 const userSchem = new mongoose.Schema({
     username: { type: String, require: true },
     password: { type: String, require: true },
-    chats: [{ type: Schema.Types.ObjectId, ref: 'Chat' }]
+    chats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }]
 });
 userSchem.set("versionKey", false);
-const User = mongoose.model('User', userSchem);
+export const User = mongoose.model('User', userSchem);
 export const signUser = async (uName, pw) => {
     try {
         const userRes = await User.findOne({ username: uName });
@@ -26,11 +27,11 @@ export const signUser = async (uName, pw) => {
             // new user
             const hashPw = await bcrypt.hash(pw, saltRounds);
             // save new user
-            const newUser = new User({ username: uName, password: hashPw });
+            const newUser = new User({ username: uName, password: hashPw, chats:[] });
             if (newUser) {
                 await newUser.save();
                 // TODO:return ok --- later on generate jkw
-                return { status: 200, msg: "new user created" }
+                return { status: 200, msg: {txt:"new user created",chats:[]} }
             } else {
                 //return user error
                 return { status: 401, msg: "ERR: can't creat user" };
@@ -38,7 +39,7 @@ export const signUser = async (uName, pw) => {
 
         } else if (await bcrypt.compare(pw, userRes.password)) {
             //user singed
-            return { status: 200, msg: "user logedin" };
+            return { status: 200, msg: {txt:"user logedin",chats:userRes.chats}};
         } else {
             //user already exists
             return { status: 401, msg: "ERR: username used" };
@@ -58,7 +59,8 @@ const chatSchema = new mongoose.Schema({
 chatSchema.set("versionKey", false);
 chatSchema.set("toJSON", {
     transform: (doc, ret) => {
-        delete ret._id;     // Remove _id
+        ret.id = ret._id;
+        delete ret._id;
         delete ret.isGroup;
         return ret;
     },
@@ -72,7 +74,7 @@ export const getChats = async (un)=>{
           .select('chats')  // Only fetch the chats field
           .populate({
             path: 'chats',
-            select: '_id chatName'  // Only populate _id and chatName
+            select: '_id chatName imgurl'  // Only populate _id, chatName and imgurl
           });
     
         if (!user) {
@@ -90,7 +92,7 @@ export const getChats = async (un)=>{
 
 // MESSAGE SCHEMA
 const msgSchem = new mongoose.Schema({
-    chat: { type: Schema.Types.ObjectId, ref: 'Chat', required: true },
+    chat: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat', required: true },
     author: { type: String, require: true },
     msg: { type: String, require: true },
     date: { type: String, require: true }

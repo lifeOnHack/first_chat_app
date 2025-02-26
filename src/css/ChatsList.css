@@ -3,7 +3,7 @@
     justify-content: start;
     flex-direction: column;
     gap: 2px;
-    background-color: blanchedalmond;
+    /* background-color: blanchedalmond; */
 }
 
 .chats {

@@ -4,8 +4,7 @@ import './App.css';
 import Signup from './components/Signup';
 import { io } from 'socket.io-client';
 import HomePage from './components/HomePage';
-import ChatsList from './components/ChatsList';
-
+import { ChatsProvider } from './utils/ChatsContext';
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState("");
@@ -14,12 +13,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <ChatsList sock={sock}></ChatsList>
-        {(!isSignedIn && <Signup setSigned={setIsSignedIn} setName={setUser}></Signup>)}
-        {(isSignedIn && <HomePage user={user}
-          sock={sock}
-          setIsSignedIn={setIsSignedIn}
-        ></HomePage>)}
+        <ChatsProvider>
+          {(!isSignedIn && <Signup setSigned={setIsSignedIn} setName={setUser} ></Signup>)}
+          {(isSignedIn && <HomePage user={user}
+            sock={sock}
+            setIsSignedIn={setIsSignedIn}
+          ></HomePage>)}
+        </ChatsProvider>
         <br />
         {false && (<><img src={logo} className="App-logo" alt="logo" />
           <p>

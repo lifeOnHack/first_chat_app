@@ -9,8 +9,8 @@ export interface msgData {
     time: string
 }
 
-function MsgPage({ user, sock }:
-    { user: string, sock: Socket | null }) {
+function MsgPage({ user, sock, chatId }:
+    { user: string, sock: Socket | null,chatId:any }) {
     const msgUrl = "http://localhost:7070/message"
     const [msgs, setMsgs] = useState<msgData[]>([]);
     const [newmsg, setNewMsg] = useState("");
@@ -31,20 +31,24 @@ function MsgPage({ user, sock }:
         }
     }
     useEffect(()=>{
-       fetch(msgUrl, {
-            "method": "GET",
-            headers: {
-                "Content-Type": 'application/json'
-            }
-        }).then(async (res)=>{
-            const data = await res.json();
-            if (res.status === 201) {
-                setMsgs(data);
-            }else{
-                console.log('fail to get msgs');
-            }
-        })
-    },[]);
+        //TODO need to update
+        // get only messages for chatId
+        if (chatId!=null) {
+        fetch(msgUrl, {
+                "method": "GET",
+                headers: {
+                    "Content-Type": 'application/json'
+                }
+            }).then(async (res)=>{
+                const data = await res.json();
+                if (res.status === 201) {
+                    setMsgs(data);
+                }else{
+                    console.log('fail to get msgs');
+                }
+            })
+        }
+    },[chatId]);
     useEffect(() => {
         if (msgListRef.current) {
             msgListRef.current.scrollTop = msgListRef.current.scrollHeight;

@@ -1,9 +1,11 @@
 import React, { FormEvent, useState } from "react";
 import "../css/Signup.css";
+import { useChats } from "../utils/ChatsContext";
 function Signup({ setSigned, setName }: any) {
     const loginUrl = "http://localhost:7070/signup"
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const { chats, setChats } = useChats();
     const signup = (e: FormEvent) => {
         e.preventDefault();
         fetch(loginUrl, {
@@ -21,6 +23,7 @@ function Signup({ setSigned, setName }: any) {
                 //alert("user " + username + " signedup");
                 setSigned(true);
                 setName(username);
+                setChats(data.body.chats);
             } else {
                 alert("signup faild with status: " + res.status + `\n${data.body}`);
             }

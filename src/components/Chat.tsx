@@ -2,12 +2,13 @@ import React from "react";
 import "../css/Chat.css"
 
 export default function Chat(
-    { name, imgurl, isActive }: { name: string, imgurl: string, isActive: boolean }
+    { name, imgurl, isActive,setActive }: { name: string, imgurl: string, isActive: boolean,setActive:any }
 ) {
     const maxNameLen = 20;
     const switchToChat = (e: any) => {
         //switch to that that
         //load the conversition
+        setActive(name);
         alert("not impl");
     }
     const fixName = (name: string) => {
