@@ -1,22 +1,19 @@
-import React, { Component, useState } from 'react';
+import React, {  useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Signup from './components/Signup';
-import { io } from 'socket.io-client';
 import HomePage from './components/HomePage';
 import { ChatsProvider } from './utils/ChatsContext';
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState("");
   //TODO add socket connection
-  const [sock, setSocket] = useState(io("ws://localhost:7070"));
   return (
     <div className="App">
       <header className="App-header">
         <ChatsProvider>
           {(!isSignedIn && <Signup setSigned={setIsSignedIn} setName={setUser} ></Signup>)}
           {(isSignedIn && <HomePage user={user}
-            sock={sock}
             setIsSignedIn={setIsSignedIn}
           ></HomePage>)}
         </ChatsProvider>

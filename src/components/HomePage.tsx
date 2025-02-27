@@ -5,11 +5,12 @@ import Disconnect from "./Disconnect";
 import '../css/HomePage.css'
 import ChatsList from "./ChatsList";
 import { useChats } from "../utils/ChatsContext";
+import { io } from 'socket.io-client';
 
-
-export default function HomePage({ user, sock, setIsSignedIn }:
-    { user: string, sock: Socket, setIsSignedIn: any }) {
+export default function HomePage({ user, setIsSignedIn }:
+    { user: string, setIsSignedIn: any }) {
     const chatUrl = "http://localhost:7070/chat"
+    const [sock, setSocket] = useState(io("ws://localhost:7070"));
     const { chats, setChats } = useChats();
     const  [chatsData,setChatsData] = useState([]);
     const [activeChatId,setActiveChatId] = useState(null);

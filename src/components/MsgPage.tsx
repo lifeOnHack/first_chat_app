@@ -33,8 +33,7 @@ function MsgPage({ user, sock, chatId }:
     useEffect(()=>{
         //TODO need to update
         // get only messages for chatId
-        if (chatId!=null) {
-        fetch(msgUrl+`/${chatId}`, {
+        fetch(msgUrl+chatId!==null? `/${chatId}`:'', {
                 "method": "GET",
                 headers: {
                     "Content-Type": 'application/json'
@@ -47,7 +46,6 @@ function MsgPage({ user, sock, chatId }:
                     console.log('fail to get msgs');
                 }
             })
-        }
     },[chatId]);
     useEffect(() => {
         if (msgListRef.current) {

@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import bcrypt from "bcrypt"
+import { errorToJSON } from "next/dist/server/render";
 
 export const connectDB = async (uri) => {
     try {
@@ -88,6 +89,22 @@ export const getChats = async (un)=>{
         console.error('Error retrieving chats:', err);
         return {status:401, msg:"ERR: can't get chats"} ;
       }
+}
+
+export const createChat = async (name,imgurl,users)=>{
+    try {
+        const newChat = new Chat({chatName:name, imgurl});
+        const res = await newChat.save();
+        if (res) {
+            users.forEach((user,i) => {
+                User.updateOne({username:user},{$pull:{chats:newChat._id}})
+            });
+            return {status:201, msg:res.toJSON()};
+        }
+        return {status:500, msg:"can't creat chat"};
+    } catch (error) {
+        return {status:402, msg:"can't save chat "+error};
+    }
 }
 
 // MESSAGE SCHEMA
