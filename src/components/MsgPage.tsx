@@ -34,7 +34,7 @@ function MsgPage({ user, sock, chatId }:
         //TODO need to update
         // get only messages for chatId
         if (chatId!=null) {
-        fetch(msgUrl, {
+        fetch(msgUrl+`/${chatId}`, {
                 "method": "GET",
                 headers: {
                     "Content-Type": 'application/json'

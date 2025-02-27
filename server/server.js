@@ -6,7 +6,6 @@ import signupRout from "./controllers/signup.js";
 import { connectDB, newMsg } from "./lib/db.js";
 import messageRout from "./controllers/message.js";
 import chatsRout from "./controllers/chats.js";
-import { updateUsers } from "./lib/updateDb.js";
 // Load environment variables from .env file
 const configRes = dotenv.config({ path: "./.env" });
 const uri = `mongodb+srv://msgapp_ilay:${process.env.DB_PW}@msgapp.yvva4.mongodb.net/?retryWrites=true&w=majority&appName=msgapp`;

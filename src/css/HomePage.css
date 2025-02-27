@@ -2,5 +2,24 @@
     width: 100%;
     height: 95vh;
     position: relative;
-    /* background-color: blueviolet; */
+    /* background-color: linear-gradient(#282c343c, #202632); */
+
+    /* scrollbar-width: 2vw;
+    scrollbar-color: #650101b9 #282c34;
+    scrollbar-shadow-color: bisque; */
+}
+
+::-webkit-scrollbar{
+    background-color: #282c343e;
+    width: 2vw;
+}
+::-webkit-scrollbar-thumb{
+    background-color: hsla(9, 80%, 50%, 0.886);
+    border-radius: 33%;
+}
+
+::-webkit-scrollbar-track{
+    background-color: #282c343e;
+    border-radius: 33%;
+    padding: 2px;
 }

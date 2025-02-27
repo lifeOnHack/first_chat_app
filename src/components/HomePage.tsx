@@ -34,7 +34,8 @@ export default function HomePage({ user, sock, setIsSignedIn }:
         })
     }, [chats]);
     return <div className="home">
-        <ChatsList sock={sock} chats={chatsData}></ChatsList>
+        <ChatsList sock={sock} chats={chatsData} 
+        activeId={activeChatId} setActive={setActiveChatId}></ChatsList>
         <MsgPage user={user} sock={sock} chatId={activeChatId}></MsgPage>
         <Disconnect discon={() => setIsSignedIn(false)}></Disconnect>
     </div>
