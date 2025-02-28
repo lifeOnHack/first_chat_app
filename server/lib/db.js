@@ -101,7 +101,7 @@ export const getChats = async (un)=>{
           return {status:404, msg:'User not found'};
         }
     
-        console.log('Chats for user:', user.chats);
+        //console.log('Chats for user:', user.chats);
         return {status:201, msg:user.chats} ;  // Returns an array of objects with _id and chatName
       } catch (err) {
         console.error('Error retrieving chats:', err);

@@ -8,18 +8,20 @@
     border-width: 3px;
     padding-top: 8px;
     padding-bottom: 8px;
+
+    margin-bottom: 2%;
     /* position: absolute;
     left: 15px;
     bottom: 25px; */
-    position: relative;
+    /* position: relative;
     bottom: 25px;
     left: -48%;
-    transform: translate(50%);
+    transform: translate(50%); */
 }
 
 .discon:hover {
     border-color: darkslategray;
-    border-width: 5px;
+    border-width: 3px;
     color: #282c34;
     background-color: rgba(172, 170, 168, 0.589);
 }

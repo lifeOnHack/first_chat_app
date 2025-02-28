@@ -3,6 +3,7 @@ import MsgPage from "./MsgPage";
 import Disconnect from "./Disconnect";
 import '../css/HomePage.css'
 import ChatsList from "./ChatsList";
+import NewChatForm from "./NewChatForm";
 import { useChats } from "../utils/ChatsContext";
 import { io } from 'socket.io-client';
 
@@ -13,12 +14,13 @@ export default function HomePage({ user, setIsSignedIn }:
     const { chats } = useChats();
     const  [chatsData,setChatsData] = useState<any>([]);
     const [activeChatId,setActiveChatId] = useState(null);
-    
+    const [isOpen,setOpen] = useState(true);
     useEffect(()=>{
         sock.emit('register',user);
         sock.on('new_chat',(newChat)=>{
             setChatsData(chatsData.concat([newChat]));
         });
+        return ()=>{sock.disconnect()}
     },[]);
 
     useEffect(() => {
@@ -42,12 +44,16 @@ export default function HomePage({ user, setIsSignedIn }:
         })
     }, [chats]);
 
-    return <div className="home">
-        <div className="side">
-            <ChatsList sock={sock} chats={chatsData} 
-            activeId={activeChatId} setActive={setActiveChatId}></ChatsList>
-            <Disconnect discon={() => setIsSignedIn(false)}></Disconnect>
+    return <>
+        {isOpen &&<NewChatForm user={"ilay"} close={()=>{setOpen(false)}} ></NewChatForm>}
+        <div className={`home ${isOpen?'disabled':'' }`}>
+            <div className="side">
+                <ChatsList sock={sock} chats={chatsData} 
+                activeId={activeChatId} setActive={setActiveChatId}></ChatsList>
+                <Disconnect discon={() => setIsSignedIn(false)}></Disconnect>
+            </div>
+            <MsgPage user={user} sock={sock} chatId={activeChatId}></MsgPage>
+
         </div>
-        <MsgPage user={user} sock={sock} chatId={activeChatId}></MsgPage>
-    </div>
+    </>
 }

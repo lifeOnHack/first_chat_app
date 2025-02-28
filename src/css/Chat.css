@@ -6,6 +6,7 @@
     width: 250px;
     max-width: 350px;
     padding: 3px;
+    user-select: none;
 }
 
 .conv:hover {

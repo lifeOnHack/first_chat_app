@@ -8,7 +8,7 @@ export default function Chat(
     const switchToChat = (e: any) => {
         //switch to that that
         //load the conversition
-        setActive(name);
+        setActive();
         alert("not impl");
     }
     const fixName = (name: string) => {

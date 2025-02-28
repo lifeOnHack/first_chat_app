@@ -21,7 +21,7 @@ export default function ChatsList(
             return <Chat name={chat.chatName} 
             imgurl={chat.imgurl? chat.imgurl : 'https://banner2.cleanpng.com/20180404/sqe/avhxkafxo.webp'} 
             isActive={activeId===chat.id}
-            setActive={(e:any)=>{setActive(chat.id)}}></Chat>;
+            setActive={()=>{setActive(chat.id)}}></Chat>;
         })}
         <Chat name="firstuser" imgurl='https://banner2.cleanpng.com/20180404/sqe/avhxkafxo.webp' isActive={false} setActive={setActive}></Chat>
         <Chat name="firstuser" imgurl='https://banner2.cleanpng.com/20180404/sqe/avhxkafxo.webp' isActive={false} setActive={setActive}></Chat>

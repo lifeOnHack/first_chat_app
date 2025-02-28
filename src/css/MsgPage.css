@@ -1,13 +1,14 @@
 .chat {
     width: 82%;
-    height: 91vh;
+    height: inherit;
     flex-direction: column;
     overflow: auto;
     margin-top: 2vh;
     /* position: absolute;
     right: 0px; */
-    position: relative;
-    left: 18%;
+    /* position: relative;
+    left: 18%; */
+    /* background-color: green; */
 }
 
 .msg-list {
@@ -21,11 +22,14 @@
     grid-row-gap: 1.5%;
     /*display: grid;
     grid-template-rows: 1fr 1fr;*/
+    margin-top: 3%;
+    /* border: red solid;
+    border-width: 2px; */
 }
 
 .input-msg {
-    border: red solid;
-    border-width: 0px;
+    /* border: red solid;
+    border-width: 2px; */
     width: 80%;
     height: fit-content;
 
@@ -37,7 +41,7 @@
     padding-bottom: 2px;
 
     position: sticky;
-    bottom: 3px;
+    bottom: 0px;
     left: 10%;
 }
 
@@ -45,13 +49,15 @@
     width: fit-content;
     height: fit-content;
     background-color: transparent;
-    border-width: 0;
+    border-width: 0.5px;
+    border-radius: 18%;
     margin-left: 0.5%;
+    box-shadow: 2px 5px rgba(4, 7, 92, 0.742);
 }
 
 .input-msg button:hover {
     border-color: #807f7077;
-    border-width: 3px;
+    border-width: 1px;
     border-radius: 18%;
 }
 

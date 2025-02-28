@@ -1,0 +1,70 @@
+
+.new_chat{
+    background: #27282b70; /* Dark overlay */
+    backdrop-filter: blur(8px);
+    color: rgb(212, 254, 246);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: stretch;
+    padding: 12px 4px;
+    width: fit-content;
+    height: 600px;
+
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    /* background-color: darkcyan; */
+}
+.btn_des{
+    background-color: transparent;
+    font-size: 2.5rem;
+    border: 2px groove hsla(194, 90%, 15%, 0.684);
+    color: inherit;
+}
+.ops{
+    /* background-color: aqua; */
+    display: flex;
+    justify-content: stretch;
+    column-gap: 20%;
+    padding-left: 12px;
+    padding-right: 12px;
+    flex-shrink: 2;
+}
+.op{
+    border-radius: 25px;
+    height: fit-content;
+    flex-grow: 1;
+}
+.inptxt{
+    font-size: 3rem;
+    color: inherit;
+    text-align: start;
+    height: 90px;
+    flex-shrink: 3;
+    background-color: transparent;
+}
+
+.u_list{
+    flex-shrink: 3;
+    display: flex;
+    column-gap: 12px;
+}
+.add_btn{
+    flex-grow: 1;
+    flex-shrink: 0;
+    align-content: center;
+    width: fit-content;
+    height: fit-content;
+    border-width: 0;
+}
+.shrink{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+}
+.u_list::input{
+    flex-grow: 2;
+}
