@@ -3,8 +3,6 @@ import { createChat, getChats } from "../lib/db.js";
 import { getIo, getSockId } from "../lib/io.js"; // Import getIo
 const chatsRout = express.Router();
 
-let io = getIo();
-
 chatsRout.get('/:un',async (req,res)=>{
     const username = req.params.un; 
     const dbRes = await getChats(username);
@@ -24,7 +22,7 @@ chatsRout.post('/new',async (req,res)=>{
         usersList.forEach(user => {
             const id = getSockId(user);
             if (id) {
-                io.to(id).emit("new_chat", dbRes.msg);
+                getIo().to(id).emit("new_chat", dbRes.msg);
             }
         });
         res.sendStatus(dbRes.status);

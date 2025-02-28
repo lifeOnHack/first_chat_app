@@ -1,11 +1,12 @@
 import React, { FormEvent, useState } from "react";
 import "../css/Signup.css";
 import { useChats } from "../utils/ChatsContext";
+
 function Signup({ setSigned, setName }: any) {
     const loginUrl = "http://localhost:7070/signup"
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const { chats, setChats } = useChats();
+    const { setChats } = useChats();
     const signup = (e: FormEvent) => {
         e.preventDefault();
         fetch(loginUrl, {

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Socket } from "socket.io-client";
 import MsgPage from "./MsgPage";
 import Disconnect from "./Disconnect";
 import '../css/HomePage.css'
@@ -11,9 +10,17 @@ export default function HomePage({ user, setIsSignedIn }:
     { user: string, setIsSignedIn: any }) {
     const chatUrl = "http://localhost:7070/chat"
     const [sock, setSocket] = useState(io("ws://localhost:7070"));
-    const { chats, setChats } = useChats();
-    const  [chatsData,setChatsData] = useState([]);
+    const { chats } = useChats();
+    const  [chatsData,setChatsData] = useState<any>([]);
     const [activeChatId,setActiveChatId] = useState(null);
+    
+    useEffect(()=>{
+        sock.emit('register',user);
+        sock.on('new_chat',(newChat)=>{
+            setChatsData(chatsData.concat([newChat]));
+        });
+    },[]);
+
     useEffect(() => {
         //fetch all users OR
         //fetch all friends
@@ -34,10 +41,13 @@ export default function HomePage({ user, setIsSignedIn }:
             console.log(err);
         })
     }, [chats]);
+
     return <div className="home">
-        <ChatsList sock={sock} chats={chatsData} 
-        activeId={activeChatId} setActive={setActiveChatId}></ChatsList>
+        <div className="side">
+            <ChatsList sock={sock} chats={chatsData} 
+            activeId={activeChatId} setActive={setActiveChatId}></ChatsList>
+            <Disconnect discon={() => setIsSignedIn(false)}></Disconnect>
+        </div>
         <MsgPage user={user} sock={sock} chatId={activeChatId}></MsgPage>
-        <Disconnect discon={() => setIsSignedIn(false)}></Disconnect>
     </div>
 }

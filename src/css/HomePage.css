@@ -11,15 +11,17 @@
 
 ::-webkit-scrollbar{
     background-color: #282c343e;
-    width: 2vw;
+    width: 1.2vw;
 }
 ::-webkit-scrollbar-thumb{
-    background-color: hsla(9, 80%, 50%, 0.886);
-    border-radius: 33%;
+    background-color: hsla(9, 80%, 50%, 0.548);
+    border-radius: 25%;
 }
-
+::-webkit-scrollbar-thumb:hover{
+    background-color: hsla(9, 80%, 50%, 0.831);
+}
 ::-webkit-scrollbar-track{
     background-color: #282c343e;
-    border-radius: 33%;
-    padding: 2px;
+    border-radius: 15%;
+    padding: 5px;
 }

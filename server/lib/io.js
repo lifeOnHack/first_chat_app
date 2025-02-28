@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import { newMsg } from "./lib/db.js"; // Import any DB functions needed
+import { getUserByFilter,newMsg } from "./db.js";// Import any DB functions needed
 
 let io; // Define io globally
 const users = {}; // Store userID -> socketID mappings
@@ -13,14 +13,19 @@ export const initializeSocket = (server) => {
 
     io.on("connection", (sock) => {
         console.log(`New user connected: ${sock.id}`);
-        sock.on("register", (name) => {
-        users[name] = scok.id;
-    });
+        sock.on("register",async (name) => {
+            console.log(`\t<-> registered: ${name}`);
+            users[name] = sock.id;
+            const user = await getUserByFilter({username:name});
+            user.chats.forEach(chatId => {
+                sock.join(chatId.toString());
+            });
+        });
 
         sock.on("new_msg", async (data) => {
-            const dbRes = await newMsg(data.author, data.msg, data.time);
+            const dbRes = await newMsg(data.author, data.msg, data.time, data.chatId);
             if (dbRes.status === 200) {
-                io.emit("recv_msg", data);
+                io.to(data.chatId.toString()).emit("recv_msg", data);
             } else {
                 sock.emit("recv_msg", null);
             }

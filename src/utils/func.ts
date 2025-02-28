@@ -1,3 +1,5 @@
+import { Socket } from "socket.io-client";
+
 export const getTime = () => {
     const now = new Date();
     const hours = now.getHours().toString();
@@ -7,3 +9,5 @@ export const getTime = () => {
 
     return `${hours}:${minutes} ${day}/${month}`;
 }
+
+export const defineIO = (sock:Socket)=>{}

@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
 import bcrypt from "bcrypt"
-import { errorToJSON } from "next/dist/server/render";
 
 export const connectDB = async (uri) => {
     try {
@@ -50,6 +49,25 @@ export const signUser = async (uName, pw) => {
         return { status: 500, msg: error };
     }
 }
+export const getUsersByChatId = async (chatId) => {
+    try {
+        const users = await User.find({ chats: chatId });
+        console.log("Users in chat:", users);
+        return users;
+    } catch (err) {
+        console.error("Error fetching users:", err);
+        return null;
+    }
+};
+export async function getUserByFilter(fltr){
+    try {
+        const user = await User.findOne(fltr);
+        return user;
+    } catch (err) {
+        console.error("Error fetching user:", err);
+        return null;
+    }
+}
 
 // CHAT SCHEMA
 const chatSchema = new mongoose.Schema({
@@ -97,7 +115,7 @@ export const createChat = async (name,imgurl,users)=>{
         const res = await newChat.save();
         if (res) {
             users.forEach((user,i) => {
-                User.updateOne({username:user},{$pull:{chats:newChat._id}})
+                User.updateOne({username:user},{$pull:{chats:res._id}})
             });
             return {status:201, msg:res.toJSON()};
         }
@@ -132,8 +150,8 @@ export const getAllMsgs = async () => {
     return res;
 }
 
-export const newMsg = async (author, msg, date) => {
-    const nMsg = new Msg({ author, msg, date });
+export const newMsg = async (author, msg, date,chat) => {
+    const nMsg = new Msg({ author, msg, date,chat });
     if (nMsg) {
         await nMsg.save();
         return { status: 200, msg: "" }

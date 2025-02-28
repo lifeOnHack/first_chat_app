@@ -10,23 +10,27 @@ export interface msgData {
 }
 
 function MsgPage({ user, sock, chatId }:
-    { user: string, sock: Socket | null,chatId:any }) {
+    { user: string, sock: Socket,chatId:any }) {
     const msgUrl = "http://localhost:7070/message"
     const [msgs, setMsgs] = useState<msgData[]>([]);
     const [newmsg, setNewMsg] = useState("");
     const textInputRef = useRef<HTMLTextAreaElement>(null);
     const msgListRef = useRef<HTMLDivElement>(null);
-    sock?.on("recv_msg", (data) => {
-        if (data === null) {
-            console.log("can't saved msg");
-        }else{
-            setMsgs(msgs.concat([data]));
-        }
-    });
+    
+    useEffect(()=>{
+        sock.on("recv_msg", (data) => {
+            if (data === null) {
+                console.log("can't saved msg");
+            }else if(data.chatId===chatId){
+                setMsgs(msgs.concat([data]));
+            }
+        });
+        return ()=>{sock.removeAllListeners("recv_msg")}
+    },[])
 
     const sendMsg = (e: any) => {
-        if (sock && newmsg.replace(/\s+/g, "") !== "") {
-            sock.emit('new_msg', { author: user, msg: newmsg, time: getTime() });
+        if (newmsg.replace(/\s+/g, "") !== "") {
+            sock.emit('new_msg', { author: user, msg: newmsg, time: getTime(),chatId });
             setNewMsg("");
         }
     }
@@ -47,6 +51,7 @@ function MsgPage({ user, sock, chatId }:
                 }
             })
     },[chatId]);
+
     useEffect(() => {
         if (msgListRef.current) {
             msgListRef.current.scrollTop = msgListRef.current.scrollHeight;
