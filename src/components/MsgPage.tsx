@@ -10,47 +10,52 @@ export interface msgData {
 }
 
 function MsgPage({ user, sock, chatId }:
-    { user: string, sock: Socket,chatId:any }) {
+    { user: string, sock: Socket, chatId: any }) {
     const msgUrl = "http://localhost:7070/message"
     const [msgs, setMsgs] = useState<msgData[]>([]);
     const [newmsg, setNewMsg] = useState("");
     const textInputRef = useRef<HTMLTextAreaElement>(null);
     const msgListRef = useRef<HTMLDivElement>(null);
-    
-    useEffect(()=>{
+
+    useEffect(() => {
+        sock.removeAllListeners("recv_msg");
         sock.on("recv_msg", (data) => {
             if (data === null) {
                 console.log("can't saved msg");
-            }else if(data.chatId===chatId){
+            } else if (data.chatId === chatId) {
                 setMsgs(msgs.concat([data]));
             }
         });
-        return ()=>{sock.removeAllListeners("recv_msg")}
-    },[])
+        //return () => { sock.removeAllListeners("recv_msg") }
+    }, [chatId, msgs, sock]);
 
     const sendMsg = (e: any) => {
         if (newmsg.replace(/\s+/g, "") !== "") {
-            sock.emit('new_msg', { author: user, msg: newmsg, time: getTime(),chatId });
+            sock.emit('new_msg', { author: user, msg: newmsg, time: getTime(), chatId });
             setNewMsg("");
         }
     }
-    useEffect(()=>{
-        //TODO need to update
+    useEffect(() => {
         // get only messages for chatId
-        fetch(msgUrl+chatId!==null? `/${chatId}`:'', {
-                "method": "GET",
-                headers: {
-                    "Content-Type": 'application/json'
-                }
-            }).then(async (res)=>{
-                const data = await res.json();
-                if (res.status === 201) {
-                    setMsgs(data);
-                }else{
-                    console.log('fail to get msgs');
-                }
-            })
-    },[chatId]);
+        const furl = msgUrl + (chatId !== null ? `/${chatId}` : '');
+        console.log(`fetch msg ${chatId}\n${furl}`);
+        fetch(furl, {
+            "method": "GET",
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        }).then(async (res) => {
+            const data = await res.json();
+            if (res.status === 201) {
+                setMsgs(data);
+            } else {
+                console.log('fail to get msgs');
+                console.log(data);
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }, [chatId]);
 
     useEffect(() => {
         if (msgListRef.current) {

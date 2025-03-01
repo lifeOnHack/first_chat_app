@@ -1,8 +1,20 @@
 import { Server } from "socket.io";
-import { getUserByFilter,newMsg } from "./db.js";// Import any DB functions needed
+import { getUserByFilter, newMsg } from "./db.js";// Import any DB functions needed
 
 let io; // Define io globally
 const users = {}; // Store userID -> socketID mappings
+const checkValid = (sockId) => {
+    return Object.values(users).includes(sockId);
+}
+const waitForValidtion = (sockId) => {
+    if (checkValid(sockId)) {
+        return;
+    }
+    io.to(sockId).emit("re_reg", null);
+}
+export function logLogedIn() {
+    console.log(users);
+}
 export const initializeSocket = (server) => {
     io = new Server(server, {
         cors: {
@@ -12,14 +24,18 @@ export const initializeSocket = (server) => {
     });
 
     io.on("connection", (sock) => {
+        logLogedIn();
         console.log(`New user connected: ${sock.id}`);
-        sock.on("register",async (name) => {
-            console.log(`\t<-> registered: ${name}`);
+        sock.on('register', (name) => {
+            //console.log(`\t<-> registered: ${name}`);
             users[name] = sock.id;
-            const user = await getUserByFilter({username:name});
-            user.chats.forEach(chatId => {
-                sock.join(chatId.toString());
-            });
+            getUserByFilter({ username: name }).then((user) => {
+                if (user) {
+                    user.chats.forEach(chatId => {
+                        sock.join(chatId.toString());
+                    });
+                }
+            })
         });
 
         sock.on("new_msg", async (data) => {
@@ -30,7 +46,9 @@ export const initializeSocket = (server) => {
                 sock.emit("recv_msg", null);
             }
         });
-
+        sock.on("sign_chat",(chatId)=>{
+            sock.join(chatId.toString());
+        });
         sock.on("disconnect", () => {
             const userId = Object.keys(users).find(key => users[key] === sock.id);
             if (userId) delete users[userId];
@@ -49,6 +67,6 @@ export const getIo = () => {
     return io;
 };
 
-export const getSockId = (user)=>{
+export const getSockId = (user) => {
     return users[user];
 }

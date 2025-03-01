@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MsgPage from "./MsgPage";
 import Disconnect from "./Disconnect";
 import '../css/HomePage.css'
@@ -12,26 +12,35 @@ export default function HomePage({ user, setIsSignedIn }:
     const chatUrl = "http://localhost:7070/chat"
     const [sock, setSocket] = useState(io("ws://localhost:7070"));
     const { chats } = useChats();
-    const  [chatsData,setChatsData] = useState<any>([]);
-    const [activeChatId,setActiveChatId] = useState(null);
-    const [isOpen,setOpen] = useState(true);
-    useEffect(()=>{
-        sock.emit('register',user);
-        sock.on('new_chat',(newChat)=>{
+    const [chatsData, setChatsData] = useState<any>([]);
+    const [activeChatId, setActiveChatId] = useState(null);
+    const [isOpen, setOpen] = useState(true);
+    useEffect(() => {
+        //sock.emit('register', user);
+        sock.on("connect", () => {
+            sock.emit('register', user);
+        })
+        //return () => { sock.disconnect() }
+    }, []);
+
+    useEffect(() => {
+        const f = (newChat: any) => {
             setChatsData(chatsData.concat([newChat]));
-        });
-        return ()=>{sock.disconnect()}
-    },[]);
+            sock.emit("sign_chat", newChat.id);
+        }
+        sock.on('new_chat', f);
+        return () => { sock.off('new_chat', f); }
+    }, [chatsData]);
 
     useEffect(() => {
         //fetch all users OR
         //fetch all friends
-        fetch(chatUrl+'/'+user,{
-            method:"GET",
+        fetch(chatUrl + '/' + user, {
+            method: "GET",
             headers: {
                 "Content-Type": 'application/json'
             }
-        }).then(async (res)=>{
+        }).then(async (res) => {
             const data = await res.json();
             if (res.status === 201) {
                 setChatsData(data);
@@ -44,16 +53,39 @@ export default function HomePage({ user, setIsSignedIn }:
         })
     }, [chats]);
 
+    const creatChat = useCallback((chat: string, imgurl: string, users: [string]) => {
+        fetch(chatUrl + '/new', {
+            "method": "POST",
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                chat, imgurl, users
+            })
+        }).then(async (res) => {
+            if (res.status !== 201) {
+                alert(`ERR: ${res.status}- ${res.statusText}`);
+            } else {
+                alert(`${chat} created`);
+            }
+        }).catch((err) => {
+            alert("err new chat");
+            console.log(err);
+        })
+    }, []);
+
     return <>
-        {isOpen &&<NewChatForm user={"ilay"} close={()=>{setOpen(false)}} ></NewChatForm>}
-        <div className={`home ${isOpen?'disabled':'' }`}>
+        {isOpen && <NewChatForm user={user} close={() => { setOpen(false); }} creat={creatChat} ></NewChatForm>}
+        <div className={`home ${isOpen ? 'disabled' : ''}`}>
             <div className="side">
-                <ChatsList sock={sock} chats={chatsData} 
-                activeId={activeChatId} setActive={setActiveChatId}></ChatsList>
-                <Disconnect discon={() => setIsSignedIn(false)}></Disconnect>
+                <ChatsList sock={sock} chats={chatsData}
+                    activeId={activeChatId} setActive={setActiveChatId}></ChatsList>
+                <Disconnect discon={() => {
+                    setIsSignedIn(false);
+                    sock.disconnect();
+                }}></Disconnect>
             </div>
             <MsgPage user={user} sock={sock} chatId={activeChatId}></MsgPage>
-
         </div>
     </>
 }

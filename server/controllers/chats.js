@@ -3,20 +3,20 @@ import { createChat, getChats } from "../lib/db.js";
 import { getIo, getSockId } from "../lib/io.js"; // Import getIo
 const chatsRout = express.Router();
 
-chatsRout.get('/:un',async (req,res)=>{
-    const username = req.params.un; 
+chatsRout.get('/:un', async (req, res) => {
+    const username = req.params.un;
     const dbRes = await getChats(username);
     if (dbRes.status === 201) {
         res.status(dbRes.status).json(dbRes.msg);
-    }else{
-        res.status(dbRes.status).send({body:dbRes.msg});
+    } else {
+        res.status(dbRes.status).send({ body: dbRes.msg });
     }
 });
-chatsRout.post('/new',async (req,res)=>{
+chatsRout.post('/new', async (req, res) => {
     const chatName = req.body.chat;
     const imgurl = req.body.imgurl;
     const usersList = req.body.users;
-    const dbRes = await createChat(chatName,imgurl,usersList);
+    const dbRes = await createChat(chatName, imgurl, usersList);
     if (dbRes.status === 201) {
         //return ok and send update in IO
         usersList.forEach(user => {
@@ -26,7 +26,7 @@ chatsRout.post('/new',async (req,res)=>{
             }
         });
         res.sendStatus(dbRes.status);
-    }else{
+    } else {
         //return error to user
         res.status(dbRes.status).send(dbRes.msg);
     }

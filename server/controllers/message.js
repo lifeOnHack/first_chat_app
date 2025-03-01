@@ -6,17 +6,17 @@ messageRout.get("/", async (req, res) => {
     const dbRes = await getAllMsgs();
     if (dbRes) {
         res.status(201).json(dbRes);
-    }else{
+    } else {
         res.sendStatus(402);
     }
 })
-messageRout.get('/:id', async (req, res)=>{
+messageRout.get('/:id', async (req, res) => {
     const groupId = req.params.id;
-    const dbRes = getChatMsgs(groupId);
+    const dbRes = await getChatMsgs(groupId);
     if (dbRes.status === 201) {
         res.status(dbRes.status).json(dbRes.msg);
-    }else{
-        res.status(dbRes.status).send({body:dbRes.msg});
+    } else {
+        res.status(dbRes.status).send({ body: dbRes.msg });
     }
 })
 
@@ -25,7 +25,7 @@ messageRout.post("/", async (req, res) => {
         req.body.author,
         req.body.msg,
         req.body.date);
-        res.status(dbRes).send();
+    res.status(dbRes).send();
 })
 
 export default messageRout;
