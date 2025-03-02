@@ -6,12 +6,6 @@ const users = {}; // Store userID -> socketID mappings
 const checkValid = (sockId) => {
     return Object.values(users).includes(sockId);
 }
-const waitForValidtion = (sockId) => {
-    if (checkValid(sockId)) {
-        return;
-    }
-    io.to(sockId).emit("re_reg", null);
-}
 export function logLogedIn() {
     console.log(users);
 }
@@ -24,10 +18,8 @@ export const initializeSocket = (server) => {
     });
 
     io.on("connection", (sock) => {
-        logLogedIn();
         console.log(`New user connected: ${sock.id}`);
         sock.on('register', (name) => {
-            //console.log(`\t<-> registered: ${name}`);
             users[name] = sock.id;
             getUserByFilter({ username: name }).then((user) => {
                 if (user) {
@@ -46,7 +38,7 @@ export const initializeSocket = (server) => {
                 sock.emit("recv_msg", null);
             }
         });
-        sock.on("sign_chat",(chatId)=>{
+        sock.on("sign_chat", (chatId) => {
             sock.join(chatId.toString());
         });
         sock.on("disconnect", () => {
@@ -55,7 +47,6 @@ export const initializeSocket = (server) => {
             console.log(`User disconnected: ${sock.id}`);
         });
     });
-
     return io;
 };
 
