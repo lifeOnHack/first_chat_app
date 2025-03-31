@@ -9,8 +9,8 @@ import { io } from 'socket.io-client';
 
 export default function HomePage({ user, setIsSignedIn }:
     { user: string, setIsSignedIn: any }) {
-    const chatUrl = "http://localhost:7070/chat"
-    const [sock, setSocket] = useState(io("ws://localhost:7070"));
+    const chatUrl = "https://localhost:7070/chat"
+    const [sock, setSocket] = useState(io("wss://localhost:7070"));
     const { chats } = useChats();
     const [chatsData, setChatsData] = useState<any>([]);
     const [activeChatId, setActiveChatId] = useState(null);

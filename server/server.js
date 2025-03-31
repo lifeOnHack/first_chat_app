@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import https from "https";
+import fs from "fs";
 import signupRout from "./controllers/signup.js";
 import messageRout from "./controllers/message.js";
 import chatsRout from "./controllers/chats.js";
@@ -11,6 +13,12 @@ dotenv.config({ path: "./.env" });
 
 const uri = `mongodb+srv://msgapp_ilay:${process.env.DB_PW}@msgapp.yvva4.mongodb.net/?retryWrites=true&w=majority&appName=msgapp`;
 const app = express();
+
+// Load SSL certificates
+const sslOptions = {
+    key: fs.readFileSync("server.key"),
+    cert: fs.readFileSync("server.cert"),
+};
 
 // Middleware setup
 const corsOptions = {
@@ -24,17 +32,17 @@ app.use("/message", messageRout);
 app.use("/chat", chatsRout);
 
 app.get("/", (req, res) => {
-    res.send("Server is running!");
+    res.send("Server is running with HTTPS!");
 });
 
-// Set the port from .env or use 3001 as default
+// Set the port from .env or use 7070 as default
 const PORT = process.env.PORT || 7070;
 
-// Start the HTTP server
-const server = app.listen(PORT, async () => {
+// Start the HTTPS server
+const server = https.createServer(sslOptions, app).listen(PORT, async () => {
     await connectDB(uri);
-    console.log(`Server running on port ${PORT}`);
+    console.log(`HTTPS Server running on port ${PORT}`);
 });
 
-// Initialize Socket.IO
+// Initialize Socket.IO with HTTPS server
 const io = initializeSocket(server);

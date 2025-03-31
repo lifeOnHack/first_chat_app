@@ -11,7 +11,7 @@ export interface msgData {
 
 function MsgPage({ user, sock, chatId }:
     { user: string, sock: Socket, chatId: any }) {
-    const msgUrl = "http://localhost:7070/message"
+    const msgUrl = "https://localhost:7070/message"
     const [msgs, setMsgs] = useState<msgData[]>([]);
     const [newmsg, setNewMsg] = useState("");
     const textInputRef = useRef<HTMLTextAreaElement>(null);

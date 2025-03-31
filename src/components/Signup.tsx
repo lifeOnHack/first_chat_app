@@ -3,7 +3,7 @@ import "../css/Signup.css";
 import { useChats } from "../utils/ChatsContext";
 
 function Signup({ setSigned, setName }: any) {
-    const loginUrl = "http://localhost:7070/signup"
+    const loginUrl = "https://localhost:7070/signup"
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const { setChats } = useChats();
