@@ -33,6 +33,65 @@
     pointer-events: none; /* Blocks clicks */
     user-select: none; /* Prevents text selection */
 }  
+.new_chat_btn {
+    width: 34vmin;
+    font-size: 1.5rem;
+    color: rgba(207, 198, 186, 0.589);
+    background-color: #282c34;
+    padding: 8px 16px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-shadow: 0 1px 0 #121315d6;
+    cursor: pointer;
+    border: 5px solid transparent; /* No border by default */
+    border-radius: 2em;
+
+    --border-angle: 0turn;
+    --main-bg: conic-gradient(
+        from var(--border-angle),
+        #213,
+        #112 5%,
+        #112 60%,
+        #213 95%
+    );
+    
+    background: var(--main-bg) padding-box;
+    background-position: center center;
+    transition: border 0.3s ease-in-out; /* Smooth transition for border */
+}
+
+/* Show the rotating border only on hover */
+.new_chat_btn:hover {
+    border: 5px solid transparent;
+    background: 
+        var(--main-bg) padding-box,
+        conic-gradient(
+            from var(--border-angle), 
+            transparent 25%, 
+            rgb(8, 33, 57), 
+            rgb(55, 39, 230) 99%, 
+            transparent
+        ) border-box, 
+        var(--main-bg) border-box;
+
+    animation: bg-spin 1.3s linear infinite;
+}
+
+@keyframes bg-spin {
+    to {
+        --border-angle: 1turn;
+    }
+}
+
+@property --border-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0turn;
+}
+
 
 ::-webkit-scrollbar{
     background-color: #282c343e;

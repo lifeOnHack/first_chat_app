@@ -37,4 +37,4 @@ const server = app.listen(PORT, async () => {
 });
 
 // Initialize Socket.IO
-initializeSocket(server);
+const io = initializeSocket(server);

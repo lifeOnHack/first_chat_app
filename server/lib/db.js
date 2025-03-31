@@ -52,7 +52,7 @@ export const signUser = async (uName, pw) => {
 export const getUsersByChatId = async (chatId) => {
     try {
         const users = await User.find({ chats: chatId });
-        console.log("Users in chat:", users);
+        //console.log("Users in chat:", users);
         return users;
     } catch (err) {
         console.error("Error fetching users:", err);
@@ -97,7 +97,7 @@ export const getChats = async (un) => {
             });
 
         if (!user) {
-            console.log('User not found');
+            //console.log('User not found');
             return { status: 404, msg: 'User not found' };
         }
 

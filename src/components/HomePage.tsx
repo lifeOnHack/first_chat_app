@@ -14,7 +14,8 @@ export default function HomePage({ user, setIsSignedIn }:
     const { chats } = useChats();
     const [chatsData, setChatsData] = useState<any>([]);
     const [activeChatId, setActiveChatId] = useState(null);
-    const [isOpen, setOpen] = useState(true);
+    const [isOpen, setOpen] = useState(false);
+
     useEffect(() => {
         //sock.emit('register', user);
         sock.on("connect", () => {
@@ -33,7 +34,7 @@ export default function HomePage({ user, setIsSignedIn }:
     }, [chatsData]);
 
     useEffect(() => {
-        //fetch all users OR
+        //fetch all chats OR
         //fetch all friends
         fetch(chatUrl + '/' + user, {
             method: "GET",
@@ -78,6 +79,8 @@ export default function HomePage({ user, setIsSignedIn }:
         {isOpen && <NewChatForm user={user} close={() => { setOpen(false); }} creat={creatChat} ></NewChatForm>}
         <div className={`home ${isOpen ? 'disabled' : ''}`}>
             <div className="side">
+                <button className="new_chat_btn"
+                    onClick={() => { setOpen(true) }}>New Chat</button>
                 <ChatsList sock={sock} chats={chatsData}
                     activeId={activeChatId} setActive={setActiveChatId}></ChatsList>
                 <Disconnect discon={() => {
