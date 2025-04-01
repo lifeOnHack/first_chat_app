@@ -36,12 +36,12 @@ function Signup({ setSigned, setName }: any) {
 
     return <>
         <form className="signupF" onSubmit={signup}>
-            <label>username</label>
+            <label htmlFor="user_id">username</label>
             <input type="text" name="username" id="user_id" onChange={(e) => {
                 setUsername(e.target.value);
             }} />
             <br />
-            <label>password</label>
+            <label htmlFor="pw_id">password</label>
             <input type="password" name="pw" id="pw_id" onChange={(e) => {
                 setPassword(e.target.value);
             }} />
