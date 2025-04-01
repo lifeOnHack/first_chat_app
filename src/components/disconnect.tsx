@@ -2,7 +2,7 @@ import React from "react";
 import '../css/Disconnect.css'
 function Disconnect({ discon }: any) {
 
-    //TODO: add socket disconnection
+    //add socket disconnection - already in discon
     return <>
         <button className="discon" onClick={discon}>Bye Bye!</button>
     </>

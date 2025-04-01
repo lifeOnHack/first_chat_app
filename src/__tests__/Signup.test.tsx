@@ -12,7 +12,7 @@ describe("Signup Component", () => {
     let mockSetSigned: jest.Mock;
     let mockSetName: jest.Mock;
     let mockSetChats: jest.Mock;
-
+    window.alert = jest.fn();
     beforeEach(() => {
         mockSetSigned = jest.fn();
         mockSetName = jest.fn();
