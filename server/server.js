@@ -46,3 +46,6 @@ const server = https.createServer(sslOptions, app).listen(PORT, async () => {
 
 // Initialize Socket.IO with HTTPS server
 const io = initializeSocket(server);
+
+//for test
+export default app;
